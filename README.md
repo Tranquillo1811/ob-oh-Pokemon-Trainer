@@ -6,6 +6,8 @@ very very simple Pokemon Trainer App for education purposes
 - feat: Pokémon Catalogue Page
 - util API: [https://pokeapi.co/](https://pokeapi.co/)
 - util API: [https://ms-oh-trivia-api.herokuapp.com/](https://ms-oh-trivia-api.herokuapp.com/)
+The application allows a user to collect Pokémon received from the PokeAPI. Users must enter username before being able to collect any Pokémon. 
+Users must also be able to view the Pokémon that have been collected.
 
 # Install
 
@@ -13,7 +15,7 @@ very very simple Pokemon Trainer App for education purposes
 
 `npm install`
 
-`npm install react-router-dom`
+`npm install -g @angular/cli`
  
 [Visual Studio Code](https://code.visualstudio.com/download) (recommended)
 
@@ -23,8 +25,7 @@ very very simple Pokemon Trainer App for education purposes
 
 open [http://localhost:3000/](http://localhost:3000/) in your browser of choice
 
-
-The React component structure is shown in [LostInTranslation_ComponentTree.pdf](./LostInTranslation_ComponentTree.pdf)
+The Angular component tree is shown in [PokemonTrainer_ComponentTree.pdf](./PokemonTrainer_ComponentTree.pdf)
 
 # Maintainers
 <https://github.com/Tranquillo1811> 
