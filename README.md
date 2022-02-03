@@ -30,7 +30,7 @@ The Angular component tree is shown in [PokemonTrainer_ComponentTree.pdf](./Poke
 # Maintainers
 <https://github.com/Tranquillo1811> 
 
-<odysseus.beratis@de.experis.com>
+<https://github.com/OBeratis>
 
 # Contributing
 This project is not supposed to have any contributors.
