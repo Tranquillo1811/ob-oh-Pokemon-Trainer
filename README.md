@@ -4,8 +4,8 @@ very very simple Pokemon Trainer App for education purposes
 - feat: LandingPage
 - feat: TrainerPage
 - feat: Pokémon Catalogue Page
-- util: API: [https://pokeapi.co/](https://pokeapi.co/)
-- util: API: [https://ms-oh-trivia-api.herokuapp.com/](https://ms-oh-trivia-api.herokuapp.com/)
+- util API: [https://pokeapi.co/](https://pokeapi.co/)
+- util API: [https://ms-oh-trivia-api.herokuapp.com/](https://ms-oh-trivia-api.herokuapp.com/)
 
 # Install
 
@@ -29,7 +29,7 @@ The React component structure is shown in [LostInTranslation_ComponentTree.pdf](
 # Maintainers
 <https://github.com/Tranquillo1811> 
 
-<https://github.com/MichelSaremi>
+<odysseus.beratis@de.experis.com>
 
 # Contributing
 This project is not supposed to have any contributors.
@@ -37,4 +37,4 @@ It is supposed to grade the individuals who composed it.
 Right after that it will be - most likely - discontinued...
 
 # License
-MIT &copy; 2022 
+[Apache License &copy; 2022](./LICENSE)
