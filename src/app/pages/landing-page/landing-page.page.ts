@@ -6,6 +6,7 @@ import { LoginService } from '../../services/login.service';
 import { Trainer } from '../../models/pokemon.model';
 import { environment } from '../../../environments/environment'
 import { TrainerPagePage } from '../trainer-page/trainer-page.page';
+import { RegisterService } from 'src/app/services/register.service';
 
 const {pokemonSessionKeyUser} = environment;
 
@@ -23,7 +24,8 @@ export class LandingPagePage implements OnInit {
 
   constructor(
     private readonly loginService: LoginService,
-    private readonly router: Router) 
+    private readonly router: Router,
+    private registerService: RegisterService) 
     {
       const data = localStorage.getItem(pokemonSessionKeyUser);
 
@@ -59,7 +61,15 @@ export class LandingPagePage implements OnInit {
     if (this.trainer !== null && this.trainer !== undefined){
       localStorage.setItem(pokemonSessionKeyUser, this.asJSON(this.trainer));
 
-      return this.router.navigate(['catalogue']);
+
+      this.registerService.register(this.username)
+        .subscribe({
+          next: (response: any) => {
+            console.log("Register: " + response);
+          }
+        })
+
+      // return this.router.navigate(['catalogue']);
     }
   }
   

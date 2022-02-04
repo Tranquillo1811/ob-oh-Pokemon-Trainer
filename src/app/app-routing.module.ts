@@ -11,7 +11,8 @@ import { CataloguePagePage } from './pages/catalogue-page/catalogue-page.page';
 const routes: Routes = [
   {
     path: "",
-    component: LandingPagePage
+    pathMatch: 'full',
+    redirectTo: '/login'
   },
   {
     path: "login",
