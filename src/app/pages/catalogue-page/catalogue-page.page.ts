@@ -9,13 +9,15 @@ import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service'
 })
 export class CataloguePagePage implements OnInit {
 
+  private _url: string = "https://pokeapi.co/api/v2/pokemon/";
+
   get pokemons(): Pokemon[] {
     return this.pokemonTrainerService.pokemons;
   }
   constructor(private pokemonTrainerService: PokemonTrainerService) { }
 
   ngOnInit(): void {
-    this.pokemonTrainerService.getAllPokemons();
+    this.pokemonTrainerService.getAllPokemons(this._url, 20, 0);
 
   }
 

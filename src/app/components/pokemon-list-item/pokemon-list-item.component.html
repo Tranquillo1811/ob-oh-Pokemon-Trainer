@@ -1,4 +1,7 @@
 <div *ngIf="pokemonDetails !== null && pokemonDetails !== undefined">
-    <h1>I am {{ pokemonDetails.name }}</h1>
-    <p>my ID is: {{ pokemonDetails.id }}</p>
+    <h2>I am {{ pokemonDetails.name }}</h2>
+    <p>
+        <img [src]="pokemonDetails.sprites.front_default" />
+        <img [src]="pokemonDetails.sprites.back_default" />
+    </p>
 </div>
