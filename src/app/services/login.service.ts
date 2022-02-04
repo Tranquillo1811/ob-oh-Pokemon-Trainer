@@ -17,6 +17,7 @@ export class LoginService {
 
     constructor(private readonly http: HttpClient) { }
 
+    // Login User
     public login(username: string): void {
         this._error = '';
         
@@ -45,6 +46,36 @@ export class LoginService {
             
           };
       }    
+
+    // Save User
+    public Save(username: string): void {
+      this._error = '';
+      
+      this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
+        .pipe(
+          map((response: Trainer[]) => {
+            if (response.length === 0) {
+              throw Error(`User ${username} was not found.`);
+            }
+            return response.pop();
+          }),
+          finalize(() => {
+            console.log('Finish loading');
+          })
+        )
+        .subscribe({
+          next: (response) => {
+              this._trainer = response;
+
+              console.log(this._trainer);
+          },
+          error: (error) => {
+              this._error = error.message;
+          }
+        }), (error: HttpErrorResponse) => {
+          
+        };
+    }  
 
     public getTrainer(): any {
         return this._trainer;
