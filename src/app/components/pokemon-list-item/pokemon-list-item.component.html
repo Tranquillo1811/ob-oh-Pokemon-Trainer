@@ -1,1 +1,4 @@
-<p>you can find me here: {{ pokemonUrl }}</p>
+<div *ngIf="pokemonDetails !== null && pokemonDetails !== undefined">
+    <h1>I am {{ pokemonDetails.name }}</h1>
+    <p>my ID is: {{ pokemonDetails.id }}</p>
+</div>

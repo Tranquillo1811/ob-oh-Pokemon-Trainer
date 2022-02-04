@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from 'src/app/models/pokemon.model';
-import { PokemontrainerService } from 'src/app/services/pokemontrainer.service';
+import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
 
 @Component({
   selector: 'app-catalogue-page',
@@ -12,7 +12,7 @@ export class CataloguePagePage implements OnInit {
   get pokemons(): Pokemon[] {
     return this.pokemonTrainerService.pokemons;
   }
-  constructor(private pokemonTrainerService: PokemontrainerService) { }
+  constructor(private pokemonTrainerService: PokemonTrainerService) { }
 
   ngOnInit(): void {
     this.pokemonTrainerService.getAllPokemons();

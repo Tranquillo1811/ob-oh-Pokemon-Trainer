@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { Pokemon } from 'src/app/models/pokemon.model';
+import { Pokemon, PokemonDetails } from 'src/app/models/pokemon.model';
 
 @Component({
   selector: 'app-pokemon-list-item',
@@ -9,11 +9,10 @@ import { Pokemon } from 'src/app/models/pokemon.model';
 export class PokemonListItemComponent implements OnInit {
 
   @Input()
-  pokemonUrl: string = "";
+  pokemonDetails: PokemonDetails | null = null;
 
   constructor() { }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {  }
 
 }

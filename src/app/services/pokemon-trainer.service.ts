@@ -1,14 +1,14 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map, finalize } from 'rxjs';
-import { Pokemon, PokemonResponse } from '../models/pokemon.model';
+import { Pokemon, PokemonDetails, PokemonResponse } from '../models/pokemon.model';
 
 const URL = "https://pokeapi.co/api/v2/pokemon/?limit=60&offset=120";
 
 @Injectable({
   providedIn: 'root'
 })
-export class PokemontrainerService {
+export class PokemonTrainerService {
 
   private _isLoading: boolean = false;
   private _pokemons: Pokemon[] = [];
@@ -19,6 +19,7 @@ export class PokemontrainerService {
   get pokemons(): Pokemon[] {
     return this._pokemons
   }
+
   constructor(private http: HttpClient) { }
 
   getAllPokemons(): void {
@@ -33,6 +34,19 @@ export class PokemontrainerService {
       .subscribe({
         next: (pokemons: Pokemon[]) => {
           this._pokemons = pokemons;
+          for (const pokemon of this._pokemons) {
+            this.http.get<PokemonDetails>(pokemon.url)
+              .subscribe(
+                {
+                  next: (details: PokemonDetails) => {
+                    pokemon.details = details;
+                  },
+                  error: (error) => {
+                    console.log(error.message);
+                  }
+                }
+              )
+          }
         },
         error: (error) => {
           console.log(error.message);
@@ -40,22 +54,4 @@ export class PokemontrainerService {
       })
   }
   
-  getPokemonByUrl(url: string): void {
-    this._isLoading = true;
-    this.http.get<PokemonResponse>(url)
-      .pipe(
-        map((response: PokemonResponse) => response.results ),
-        finalize(() => {
-          this._isLoading = false;
-        })
-      )
-      .subscribe({
-        next: (pokemons: Pokemon[]) => {
-          this._pokemons = pokemons;
-        },
-        error: (error) => {
-          console.log(error.message);
-        }
-      })
-  }
 }
