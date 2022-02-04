@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import {finalize, map} from 'rxjs/operators';
 
 import { environment } from '../../environments/environment'
 import { Trainer } from '../models/pokemon.model';
@@ -11,33 +12,45 @@ const {pokemonApiBaseUrl} = environment;
   })
 
 export class LoginService {
-    private _user: Trainer[] = [];
+    private _trainer: Trainer | undefined;
     private _error: string = '';
+
     constructor(private readonly http: HttpClient) { }
 
-    public loginUser(username: string): any {
+    public login(username: string): void {
+        this._error = '';
+        
         this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
-        .subscribe({
-        next: (response) => {
-            this._user = response;
-        },
-        error: (error) => {
-            this._error = error.message;
-        }
-        });
-    }
+          .pipe(
+            map((response: Trainer[]) => {
+              if (response.length === 0) {
+                throw Error(`User ${username} was not found.`);
+              }
+              return response.pop();
+            }),
+            finalize(() => {
+              console.log('Finish loading');
+            })
+          )
+          .subscribe({
+            next: (response) => {
+                this._trainer = response;
 
-    public getTrainer(): Trainer | null {
-        if (this._user.length == 1)
-        {
-            return this._user[0];  
-        }
+                console.log(this._trainer);
+            },
+            error: (error) => {
+                this._error = error.message;
+            }
+          }), (error: HttpErrorResponse) => {
+            
+          };
+      }    
 
-        return null;
-    }    
+    public getTrainer(): any {
+        return this._trainer;
+    }  
 
     public getError(): string {
         return this._error;
-    }    
-
+    }
 }

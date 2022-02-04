@@ -1,12 +1,25 @@
-<h1>Login</h1>
+<main>
+    <h1>Login</h1>
+    <form>
+        <fieldset>
+            <label>Username: </label>
+            <input type="text" [(ngModel)]="username"
+            placeholder="Enter your username" id="username" name="username"/>
+        </fieldset>
+    
+        <button type="button" (click)="onLoginClick()">Login</button>
+        <button type="button" (click)="onSaveClick()">Save</button>
+        <button type="button" (click)="onNavToTrainerClick()">Go to Trainer</button>
+    </form>
+</main>
 
-<form>
-    <fieldset>
-        <label>Username: </label>
-        <input type="text" [(ngModel)]="username"
-        placeholder="Enter your username" id="username" name="username"/>
-    </fieldset>
+<section *ngIf="trainer !== null && trainer !== undefined">
+    <h4>Login for {{ trainer.username }} success!</h4>
+</section>
+  
+<section *ngIf="error">
+    <h4>Login unsuccessful</h4>
+    <p>{{ error }}</p>
+</section>
+  
 
-    <button type="button" (click)="onLoginClick()">Login</button>
-    <button type="button" (click)="onSaveClick()">Save</button>
-</form>
