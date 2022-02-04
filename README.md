@@ -21,7 +21,7 @@ Users must also be able to view the Pokémon that have been collected.
 
 
 # Usage
-`npm start`
+`ng serve`
 
 open [http://localhost:3000/](http://localhost:3000/) in your browser of choice
 
