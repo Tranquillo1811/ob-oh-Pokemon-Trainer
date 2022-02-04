@@ -14,6 +14,10 @@ const routes: Routes = [
     component: LandingPagePage
   },
   {
+    path: "login",
+    component: LandingPagePage
+  },
+  {
     path: "trainer",
     component: TrainerPagePage
   },
