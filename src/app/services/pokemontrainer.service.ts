@@ -39,5 +39,23 @@ export class PokemontrainerService {
         }
       })
   }
-   
+  
+  getPokemonByUrl(url: string): void {
+    this._isLoading = true;
+    this.http.get<PokemonResponse>(url)
+      .pipe(
+        map((response: PokemonResponse) => response.results ),
+        finalize(() => {
+          this._isLoading = false;
+        })
+      )
+      .subscribe({
+        next: (pokemons: Pokemon[]) => {
+          this._pokemons = pokemons;
+        },
+        error: (error) => {
+          console.log(error.message);
+        }
+      })
+  }
 }
