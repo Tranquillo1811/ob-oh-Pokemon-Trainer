@@ -1,11 +1,18 @@
-div {
+div.item {
     border: 1px solid;
     margin: 5px;
     width: 200px;
+    background-color: lightcyan;
+}
+
+div.placeholder {
+    height: 20px;
 }
 
 img.PokemonImg {
     width: 100px;
+    margin: 0px;
+    padding: 0px;
 }
 
 img.Indicator {
@@ -17,4 +24,14 @@ img.Indicator {
 h4 {
     margin: 0px;
     text-align: center;
+}
+
+p {
+    margin: 0px;
+    align-items: center;
+    text-align: center;
+}
+
+button {
+    margin: 0px 0px 10px 0px;
 }

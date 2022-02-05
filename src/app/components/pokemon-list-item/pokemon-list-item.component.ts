@@ -12,13 +12,26 @@ export class PokemonListItemComponent implements OnInit {
   @Input()
   pokemonDetails: PokemonDetails | null = null;
 
-  constructor(private pokemonTrainerService: PokemonTrainerService) { }
+  get isCollected(): boolean {
+    return [1, 2, 3].indexOf(Number(this.pokemonDetails?.id)) > -1;
+  }
+
+  constructor(
+    private pokemonTrainerService: PokemonTrainerService,
+    //private loginService: LoginService
+  ) { }
 
   ngOnInit(): void {  }
 
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
-    this.pokemonTrainerService.addPokemon2Collection(3, Number(this.pokemonDetails?.id));
+    this.pokemonTrainerService.addPokemon2Collection(
+      4,   //--- trainerId 
+      Number(this.pokemonDetails?.id),
+      [1, 2, 3]   //--- this.trainer.pokemon
+    );
+    [1, 2, 3].push(Number(this.pokemonDetails?.id));
+
   }
 
 }

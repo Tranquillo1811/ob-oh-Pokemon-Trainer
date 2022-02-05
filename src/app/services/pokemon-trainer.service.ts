@@ -53,12 +53,13 @@ export class PokemonTrainerService {
       })
   }
   
-  addPokemon2Collection(trainerId: number, pokemonId: number): void {
+  addPokemon2Collection(trainerId: number, pokemonId: number, pokemonsCollected: number[]): void {
+    pokemonsCollected.push(pokemonId);
     const body = {
-      pokemon: [1, 2 ,3]
+      pokemon: pokemonsCollected
     }
     const headers = this.createHttpHeaders();
-    console.log(`sending POST request: trainerId=${trainerId}, pokemonId=${pokemonId}`);
+    console.log(`sending POST request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${pokemonsCollected}`);
     const url = `${trainerAPIUrl}/${trainerId}`;
     this.http.patch(url, body, { headers })
       .subscribe((response) => console.log("response:", response))
