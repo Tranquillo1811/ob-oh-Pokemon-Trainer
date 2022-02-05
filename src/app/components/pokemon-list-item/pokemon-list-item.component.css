@@ -4,6 +4,17 @@ div {
     width: 200px;
 }
 
-img {
+img.PokemonImg {
     width: 100px;
+}
+
+img.Indicator {
+    width: 20px;
+    margin: 0px;
+    visibility: visible;
+}
+
+h4 {
+    margin: 0px;
+    text-align: center;
 }

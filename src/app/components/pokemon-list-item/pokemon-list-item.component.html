@@ -1,7 +1,11 @@
 <div *ngIf="pokemonDetails !== null && pokemonDetails !== undefined">
-    <h2>I am {{ pokemonDetails.name }}</h2>
+    <img class="Indicator" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png" alt="collected" />
+    <h4>My name is {{ pokemonDetails.name }}.</h4>
     <p>
-        <img [src]="pokemonDetails.sprites.front_default" />
+        <img class="PokemonImg" [src]="pokemonDetails.sprites.front_default" />
         <img [src]="pokemonDetails.sprites.back_default" />
     </p>
+    <button type="button" (click)="handleAdd2CollectionClick()">
+        Add to my collection
+    </button>
 </div>

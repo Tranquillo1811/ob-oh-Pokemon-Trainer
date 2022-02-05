@@ -1,9 +1,10 @@
-import { HttpClient } from '@angular/common/http';
-import { Injectable } from '@angular/core';
+import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { ComponentFactoryResolver, Injectable } from '@angular/core';
 import { map, finalize } from 'rxjs';
 import { Pokemon, PokemonDetails, PokemonResponse } from '../models/pokemon.model';
 
 //const URL = "https://pokeapi.co/api/v2/pokemon/?limit=60&offset=120";
+const trainerAPIUrl = "https://obe-assignment-api.herokuapp.com/trainers"
 
 @Injectable({
   providedIn: 'root'
@@ -52,4 +53,23 @@ export class PokemonTrainerService {
       })
   }
   
+  addPokemon2Collection(trainerId: number, pokemonId: number): void {
+    const body = {
+      pokemon: [1, 2 ,3]
+    }
+    const headers = this.createHttpHeaders();
+    console.log(`sending POST request: trainerId=${trainerId}, pokemonId=${pokemonId}`);
+    const url = `${trainerAPIUrl}/${trainerId}`;
+    this.http.patch(url, body, { headers })
+      .subscribe((response) => console.log("response:", response))
+
+  }
+
+  private createHttpHeaders(): HttpHeaders {
+    return new HttpHeaders({
+        'Content-Type': 'application/json',
+        'x-api-key': 'xLZ/ENQNQUyhPD0eNtEGYw=='
+    })
+  }
+
 }
