@@ -4,11 +4,14 @@
         <fieldset>
             <label>Username: </label>
             <input type="text" 
-            ngModel #username="ngModel" required
+            ngModel 
+            name="username"
+            #username="ngModel" 
+            required
             [ngClass]="{ 'is-valid': username.valid, 'is-invalid': (username.invalid && (username.dirty || username.touched)) }"
             minlength="3"
             maxlength="15"
-            placeholder="Enter your username" id="username" name="username"/>
+            placeholder="Enter your username" />
         </fieldset>
     
         <div id="usernameErrors" *ngIf="username">
@@ -22,8 +25,18 @@
               </div>
         </div>
 
-        <button type="button" (click)="onLoginClick()" [disabled]="registerForm.invalid">Login</button>
-        <button type="button" (click)="onSaveClick()" [disabled]="registerForm.invalid">Save</button>
+        <button 
+            type="button" 
+            (click)="onLoginClick()" 
+            [disabled]="registerForm.invalid">
+            Login
+        </button>
+        <button 
+            type="button" 
+            (click)="onSaveClick(registerForm)" 
+            [disabled]="registerForm.invalid">
+            Register new user
+        </button>
     </form>
 </main>
 
