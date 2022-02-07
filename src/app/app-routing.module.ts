@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { RouterModule, Routes, CanActivate } from '@angular/router';
 
 /*
   Module Dependencies
@@ -7,6 +7,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LandingPagePage } from './pages/landing-page/landing-page.page';
 import { TrainerPagePage } from './pages/trainer-page/trainer-page.page';
 import { CataloguePagePage } from './pages/catalogue-page/catalogue-page.page';
+import { LoginGuardService } from './services/login-guard.service';
 
 const routes: Routes = [
   {
@@ -20,11 +21,13 @@ const routes: Routes = [
   },
   {
     path: "trainer",
-    component: TrainerPagePage
+    component: TrainerPagePage,
+    canActivate: [LoginGuardService]
   },
   {
     path: "catalogue",
-    component: CataloguePagePage
+    component: CataloguePagePage,
+    canActivate: [LoginGuardService]
   }
 ];
 

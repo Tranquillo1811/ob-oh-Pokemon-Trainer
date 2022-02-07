@@ -23,7 +23,7 @@ Users must also be able to view the Pokémon that have been collected.
 # Usage
 `ng serve`
 
-open [http://localhost:3000/](http://localhost:3000/) in your browser of choice
+open [http://localhost:4200/](http://localhost:4200/) in your browser of choice
 
 The Angular component tree is shown in [PokemonTrainer_ComponentTree.pdf](./PokemonTrainer_ComponentTree.pdf)
 
@@ -35,7 +35,7 @@ The Angular component tree is shown in [PokemonTrainer_ComponentTree.pdf](./Poke
 # Contributing
 This project is not supposed to have any contributors.
 It is supposed to grade the individuals who composed it.
-Right after that it will be - most likely - discontinued...
+Right after that graduation it will be - most likely - instantly discontinued...
 
 # License
 [Apache License &copy; 2022](./LICENSE)
