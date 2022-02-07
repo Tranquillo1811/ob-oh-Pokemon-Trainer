@@ -5,7 +5,8 @@ import {finalize, map} from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import { Trainer } from '../models/pokemon.model';
 
-const {pokemonApiBaseUrl} = environment;
+const { pokemonApiBaseUrl } = environment;
+const { pokemonSessionKeyUser } = environment;
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +37,7 @@ export class LoginService {
           .subscribe({
             next: (response) => {
                 this._trainer = response;
-
+                localStorage.setItem(pokemonSessionKeyUser, JSON.stringify(this._trainer));
                 console.log(this._trainer);
             },
             error: (error) => {

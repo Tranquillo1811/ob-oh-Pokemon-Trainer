@@ -10,6 +10,7 @@ import { TrainerPagePage } from './pages/trainer-page/trainer-page.page';
 import { CataloguePagePage } from './pages/catalogue-page/catalogue-page.page';
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { PokemonListItemComponent } from './components/pokemon-list-item/pokemon-list-item.component';
+import { LoginGuardService } from './services/login-guard.service';
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import { PokemonListItemComponent } from './components/pokemon-list-item/pokemon
     HttpClientModule,
     FormsModule
   ],
-  providers: [],
+  providers: [LoginGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
