@@ -41,8 +41,8 @@ export class LandingPagePage implements OnInit {
   }
 
   // GETTERS
-  get trainer(): Trainer {
-    return this.loginService.getTrainer() as Trainer;
+  get trainer(): Trainer | undefined {
+    return this.loginService.Trainer;
   }
   
   get error(): string {

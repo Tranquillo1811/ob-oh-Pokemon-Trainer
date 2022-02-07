@@ -47,7 +47,7 @@ export class LoginService {
           };
       }    
 
-    public getTrainer(): any {
+    get Trainer(): Trainer | undefined {
         return this._trainer;
     }  
 
