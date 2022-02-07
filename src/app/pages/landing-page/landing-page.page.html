@@ -1,1 +1,52 @@
-<h1>I am the landing page</h1>
+<main>
+    <h1>Login</h1>
+    <form #registerForm="ngForm">
+        <fieldset>
+            <label>Username: </label>
+            <input type="text" 
+            ngModel 
+            name="username"
+            #username="ngModel" 
+            required
+            [ngClass]="{ 'is-valid': username.valid, 'is-invalid': (username.invalid && (username.dirty || username.touched)) }"
+            minlength="3"
+            maxlength="15"
+            placeholder="Enter your username" />
+        </fieldset>
+    
+        <div id="usernameErrors" *ngIf="username">
+            <div *ngIf="username.errors && username.invalid  && (username.touched || username.dirty)">
+                <p *ngIf="username.errors['required']">
+                  Username is required.
+                </p>
+                <p *ngIf="username.errors['minlength']">
+                  Username is too short (3).
+                </p>
+              </div>
+        </div>
+
+        <button 
+            type="button" 
+            (click)="onLoginClick()" 
+            [disabled]="registerForm.invalid">
+            Login
+        </button>
+        <button 
+            type="button" 
+            (click)="onSaveClick(registerForm)" 
+            [disabled]="registerForm.invalid">
+            Register new user
+        </button>
+    </form>
+</main>
+
+<section *ngIf="trainer !== null && trainer !== undefined">
+    <h4>Login for {{ trainer.username }} success!</h4>
+</section>
+  
+<section *ngIf="error">
+    <h4>Login unsuccessful</h4>
+    <p>{{ error }}</p>
+</section>
+  
+

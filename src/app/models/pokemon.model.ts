@@ -29,3 +29,10 @@ export interface PokemonSprite {
     front_shiny: string | null,
     front_shiny_female: string | null
 }
+
+export interface Trainer {
+    id: number;
+    username: string;
+    pokemon: number[];
+}
+

@@ -1,4 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+
+import { environment } from '../../../environments/environment'
+
+const {pokemonSessionKeyUser} = environment;
 
 @Component({
   selector: 'app-trainer-page',
@@ -7,7 +12,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TrainerPagePage implements OnInit {
 
-  constructor() { }
+  constructor(private readonly router: Router) 
+  { 
+    const data = localStorage.getItem(pokemonSessionKeyUser);
+
+    if (data === null || data === 'undefined') {
+      this.router.navigate(['/login']);
+    }    
+  }
 
   ngOnInit(): void {
   }
