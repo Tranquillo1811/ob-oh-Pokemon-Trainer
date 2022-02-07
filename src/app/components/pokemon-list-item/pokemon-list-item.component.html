@@ -1,0 +1,21 @@
+<div class="item" *ngIf="pokemonDetails !== null && pokemonDetails !== undefined">
+    <img 
+        class="Indicator" 
+        src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/ultra-ball.png" 
+        alt="collected" 
+        *ngIf="isCollected" />
+    <div class="placeholder" *ngIf="!isCollected"></div>
+    <h4>My name is {{ pokemonDetails.name }}.</h4>
+    <p>
+        <img class="PokemonImg" [src]="pokemonDetails.sprites.front_default" />
+        <img [src]="pokemonDetails.sprites.back_default" />
+    </p>
+    <p>
+        <button 
+            type="button" 
+            *ngIf="!isCollected"
+            (click)="handleAdd2CollectionClick()">
+            Add to my collection
+        </button>
+    </p>
+</div>

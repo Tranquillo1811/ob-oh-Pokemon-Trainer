@@ -8,13 +8,17 @@ import { AppComponent } from './app.component';
 import { LandingPagePage } from './pages/landing-page/landing-page.page';
 import { TrainerPagePage } from './pages/trainer-page/trainer-page.page';
 import { CataloguePagePage } from './pages/catalogue-page/catalogue-page.page';
+import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
+import { PokemonListItemComponent } from './components/pokemon-list-item/pokemon-list-item.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LandingPagePage,
     TrainerPagePage,
-    CataloguePagePage
+    CataloguePagePage,
+    PokemonListComponent,
+    PokemonListItemComponent
   ],
   imports: [
     BrowserModule,
