@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Pokemon, PokemonDetails } from 'src/app/models/pokemon.model';
 import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
+import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-pokemon-list-item',
@@ -13,7 +14,11 @@ export class PokemonListItemComponent implements OnInit {
   pokemonDetails: PokemonDetails | null = null;
 
   get isCollected(): boolean {
-    return [1, 2, 3].indexOf(Number(this.pokemonDetails?.id)) > -1;
+    let result: boolean = false;
+    if(Array.isArray(this.pokemonTrainerService.pokemonIdsCollected)) {
+      result = this.pokemonTrainerService.pokemonIdsCollected.indexOf(Number(this.pokemonDetails?.id)) > -1
+    }
+    return result;
   }
 
   constructor(
@@ -26,11 +31,10 @@ export class PokemonListItemComponent implements OnInit {
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
     this.pokemonTrainerService.addPokemon2Collection(
-      4,   //--- trainerId 
-      Number(this.pokemonDetails?.id),
-      [1, 2, 3]   //--- this.trainer.pokemon
+      2,   //--- trainerId 
+      Number(this.pokemonDetails?.id)
     );
-    [1, 2, 3].push(Number(this.pokemonDetails?.id));
+    //[1, 2, 3].push(Number(this.pokemonDetails?.id));
 
   }
 

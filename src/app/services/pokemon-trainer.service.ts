@@ -13,6 +13,8 @@ export class PokemonTrainerService {
 
   private _isLoading: boolean = false;
   private _pokemons: Pokemon[] = [];
+  //private {pokemonSessionKeyUser} = environment;
+  private _pokemonSessionKeyUser = 'pokemon-session';
 
   get isLoading(): boolean {
     return this._isLoading;
@@ -21,6 +23,15 @@ export class PokemonTrainerService {
     return this._pokemons
   }
 
+  get pokemonIdsCollected(): Number[] {
+    let result: Number[] = [];
+    const data = sessionStorage.getItem(this._pokemonSessionKeyUser);
+    if(data !== null && data !== undefined) {
+      result = JSON.parse(data);
+    }
+    console.log(`pokemonIdsCollected: ${result}`);
+    return result;
+  }
   constructor(private http: HttpClient) { }
 
   getAllPokemons(url: string, limit: number, offset: number): void {
@@ -53,17 +64,25 @@ export class PokemonTrainerService {
       })
   }
   
-  addPokemon2Collection(trainerId: number, pokemonId: number, pokemonsCollected: number[]): void {
-    pokemonsCollected.push(pokemonId);
+  addPokemon2Collection(trainerId: number, pokemonId: number): void {
+    let pokemonsCollected = this.pokemonIdsCollected;
+    if(Array.isArray(pokemonsCollected)) {
+      pokemonsCollected.push(pokemonId);
+    }
+    else {
+      pokemonsCollected = [pokemonId];
+    }
+    console.log(`storing this collection to JSON DB: ${pokemonsCollected}`);
     const body = {
       pokemon: pokemonsCollected
     }
     const headers = this.createHttpHeaders();
-    console.log(`sending POST request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${pokemonsCollected}`);
+    console.log(`sending PATCH request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${pokemonsCollected}`);
     const url = `${trainerAPIUrl}/${trainerId}`;
     this.http.patch(url, body, { headers })
       .subscribe((response) => console.log("response:", response))
-
+    //--- update collected pokemons in session storage
+    sessionStorage.setItem(this._pokemonSessionKeyUser, JSON.stringify(pokemonsCollected));
   }
 
   private createHttpHeaders(): HttpHeaders {
