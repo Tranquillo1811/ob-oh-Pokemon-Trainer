@@ -1,12 +1,10 @@
-import { Component, OnInit, EventEmitter, OnDestroy, Input, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import {Observable, Subscription} from 'rxjs';
 
-import { LoginService } from '../../services/login.service';
-import { Trainer } from '../../models/pokemon.model';
-import { environment } from '../../../environments/environment'
-import { TrainerPagePage } from '../trainer-page/trainer-page.page';
-import { RegisterService } from 'src/app/services/register.service';
+import { LoginService } from "../../services/login.service";
+import { Trainer } from "../../models/pokemon.model";
+import { environment } from "../../../environments/environment";
+import { RegisterService } from "../../services/register.service";
 import { NgForm } from '@angular/forms';
 
 const {pokemonSessionKeyUser} = environment;
@@ -18,9 +16,7 @@ const {pokemonSessionKeyUser} = environment;
 })
 
 export class LandingPagePage implements OnInit {
-  // Communication
-  @Output() successful: EventEmitter<Trainer> = new EventEmitter<Trainer>();
-
+  
   public username: string = '';
 
   constructor(
