@@ -41,8 +41,8 @@ export class LandingPagePage implements OnInit {
   }
 
   // GETTERS
-  get trainer(): Trainer {
-    return this.loginService.getTrainer() as Trainer;
+  get trainer(): Trainer | undefined {
+    return this.loginService.Trainer;
   }
   
   get error(): string {
@@ -50,7 +50,8 @@ export class LandingPagePage implements OnInit {
   }
   
   // Event handler
-  public onLoginClick(): any {
+  public onLoginClick(form: NgForm): any {
+    this.username = form.value.username;
     this.loginService.login(this.username);
   } 
   
@@ -58,7 +59,6 @@ export class LandingPagePage implements OnInit {
     this.username = form.value.username;
     if (this.trainer === null || this.trainer === undefined){
       localStorage.setItem(pokemonTrainer, this.asJSON(this.trainer));
-
       console.log(`registering new user: ${this.username}`);
       this.registerService.register(this.username)
         .subscribe({

@@ -5,7 +5,8 @@ import {finalize, map} from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import { Trainer } from '../models/pokemon.model';
 
-const {pokemonApiBaseUrl} = environment;
+const { pokemonApiBaseUrl } = environment;
+const { pokemonTrainer } = environment;
 
 @Injectable({
     providedIn: 'root'
@@ -36,7 +37,7 @@ export class LoginService {
           .subscribe({
             next: (response) => {
                 this._trainer = response;
-
+                localStorage.setItem(pokemonTrainer, JSON.stringify(this._trainer));
                 console.log(this._trainer);
             },
             error: (error) => {
@@ -47,7 +48,7 @@ export class LoginService {
           };
       }    
 
-    public getTrainer(): any {
+    get Trainer(): Trainer | undefined {
         return this._trainer;
     }  
 

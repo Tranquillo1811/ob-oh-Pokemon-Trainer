@@ -5,7 +5,8 @@
 export const environment = {
   production: false,
   pokemonApiBaseUrl: 'https://obe-assignment-api.herokuapp.com/trainers',
-  pokemonTrainer: 'pokemon-trainer'
+  pokemonTrainer: 'pokemon-trainer',
+  pokemonList: 'pokemon-list'
 };
 
 /*

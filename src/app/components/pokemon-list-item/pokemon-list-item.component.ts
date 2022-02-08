@@ -2,7 +2,6 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Pokemon, PokemonDetails } from 'src/app/models/pokemon.model';
 import { LoginService } from 'src/app/services/login.service';
 import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
-import { environment } from '../../../environments/environment'
 
 @Component({
   selector: 'app-pokemon-list-item',
@@ -32,7 +31,7 @@ export class PokemonListItemComponent implements OnInit {
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
     this.pokemonTrainerService.addPokemon2Collection(
-      
+      Number(this.loginService.Trainer?.id),   //--- trainerId 
       Number(this.pokemonDetails?.id)
     );
 

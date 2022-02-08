@@ -1,10 +1,12 @@
 import { HttpClient,HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
+import { environment } from "../../environments/environment";
 import { Pokemon, PokemonDetails, PokemonResponse } from '../models/pokemon.model';
 
-//const URL = "https://pokeapi.co/api/v2/pokemon/?limit=60&offset=120";
-const trainerAPIUrl = "https://obe-assignment-api.herokuapp.com/trainers"
+const trainerAPIUrl = "https://obe-assignment-api.herokuapp.com/trainers";
+const { pokemonList } = environment;
+const { pokemonTrainer } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -12,22 +14,41 @@ const trainerAPIUrl = "https://obe-assignment-api.herokuapp.com/trainers"
 export class PokemonTrainerService {
 
   private _isLoading: boolean = false;
-  private _pokemons: Pokemon[] = [];
   private _pokemonIdsCollected: number[] = [];
 
   get isLoading(): boolean {
     return this._isLoading;
   }
-  get pokemons(): Pokemon[] {
-    return this._pokemons
-  }
-
   get pokemonIdsCollected(): Number[] {
     return this._pokemonIdsCollected;
   }
+
+  get pokemonsCollected(): Pokemon[] {
+    let result: Pokemon[] = [];
+    for (const pokemonId of this._pokemonIdsCollected) {
+      //--- check whether pokemon with current id is available in sessionStorage
+      const storage = sessionStorage.getItem(pokemonList);
+      if(storage != null) {
+        const pokemonArray = JSON.parse(storage);
+        const foundPokemon = pokemonArray.filter((pokemon: Pokemon) => pokemon.details?.id == pokemonId);
+        if(foundPokemon) {
+          result.push(foundPokemon);
+        }
+      }
+    }
+    return result;
+  }
+
   constructor(private http: HttpClient) { }
 
-  getAllPokemons(url: string, limit: number, offset: number): void {
+  /**
+   * receives Pokemon data through API and 
+   * stores it in sessionStorage
+   * @param url url of Pokemon API
+   * @param limit number of pokemons to be fetched
+   * @param offset index of first pokemon to fetch
+   */
+  loadPokemons(url: string, limit: number, offset: number): void {
     url = `${url}?limit=${limit}&offset=${offset}`;
     this._isLoading = true;
     this.http.get<PokemonResponse>(url)
@@ -36,13 +57,13 @@ export class PokemonTrainerService {
       )
       .subscribe({
         next: (pokemons: Pokemon[]) => {
-          this._pokemons = pokemons;
-          for (const pokemon of this._pokemons) {
+          for (const pokemon of pokemons) {
             this.http.get<PokemonDetails>(pokemon.url)
               .subscribe(
                 {
                   next: (details: PokemonDetails) => {
                     pokemon.details = details;
+                    sessionStorage.setItem(pokemonList, JSON.stringify(pokemons));
                   },
                   error: (error) => {
                     console.log(error.message);
@@ -65,6 +86,7 @@ export class PokemonTrainerService {
   addPokemon2Collection(trainerId: number, pokemonId: number): void {
     const pokemonsCollected = this._pokemonIdsCollected;
     this._pokemonIdsCollected.push(pokemonId);
+    localStorage.setItem(pokemonTrainer, JSON.stringify(this._pokemonIdsCollected));
     console.log(`storing this collection to JSON DB: ${pokemonsCollected}`);
     const headers = this.createHttpHeaders();
     const body = {
