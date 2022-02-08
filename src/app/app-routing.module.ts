@@ -22,11 +22,13 @@ const routes: Routes = [
   {
     path: "trainer",
     component: TrainerPagePage,
+    //--- only accessible when user has logged in
     canActivate: [LoginGuardService]
   },
   {
     path: "catalogue",
     component: CataloguePagePage,
+    //--- only accessible when user has logged in
     canActivate: [LoginGuardService]
   }
 ];

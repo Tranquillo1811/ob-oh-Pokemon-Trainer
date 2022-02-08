@@ -22,9 +22,10 @@ export class TrainerPagePage implements OnInit {
   { }
 
   ngOnInit(): void {
+    //--- get Pokemons that the user has collected so far
+    //--- either from sessionStorage or via API if not yet in sessionStoage
     this._collectedPokemons = this.pokemonTrainerService.pokemonsCollected;    
     console.log(`ngOnInit: ${this.pokemonTrainerService.pokemonsCollected}`)
-    console.log("Test:", this.loginService.test);
   }
 
 }

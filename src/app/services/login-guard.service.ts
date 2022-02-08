@@ -22,6 +22,7 @@ export class LoginGuardService implements CanActivate {
       console.log("LoginGuardService is active...");
       const trainer = localStorage.getItem(pokemonTrainer);
       console.log(`[canActivate] trainer: ${trainer}`);
+      //--- check localStorage whether user has logged in (trainer object is present)
       const result = trainer !== undefined && trainer !== null && trainer !== ""
       if(!result) {
         this.router.navigateByUrl("/login");

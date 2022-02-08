@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 
 import { LoginService } from "../../services/login.service";
@@ -16,25 +16,13 @@ const { pokemonTrainer } = environment;
 })
 
 export class LandingPagePage implements OnInit {
-  
   public username: string = '';
 
+  //--- inject requeired services
   constructor(
     private readonly loginService: LoginService,
     private readonly router: Router,
-    private registerService: RegisterService) 
-    {
-      const data = localStorage.getItem(pokemonTrainer);
-
-      if (data && data !== 'undefined') {
-        console.log(JSON.parse(data));
-
-        const _trainer: Trainer = JSON.parse(data);
-        // this.successful.emit(_trainer);
-
-        //this.router.navigate(['login']);
-      }
-    }
+    private registerService: RegisterService) {  }
 
   ngOnInit(): void {
     
@@ -49,28 +37,14 @@ export class LandingPagePage implements OnInit {
     return this.loginService.getError();
   }
   
-  // Event handler
+  /**
+   * handles click on Login Button
+   * @param form 
+   */
   public onLoginClick(form: NgForm): any {
     this.username = form.value.username;
     this.loginService.login(this.username);
-    this.router.navigateByUrl("/trainer");
   } 
-  
-  public onSaveClick(form: NgForm): any {
-    this.username = form.value.username;
-    if (this.trainer === null || this.trainer === undefined){
-      localStorage.setItem(pokemonTrainer, this.asJSON(this.trainer));
-      console.log(`registering new user: ${this.username}`);
-      this.registerService.register(this.username)
-        .subscribe({
-          next: (response: any) => {
-            console.log("Register: " + response);
-          }
-        })
-
-      // return this.router.navigate(['catalogue']);
-    }
-  }
   
   // Helper
   asJSON(val: any) {

@@ -16,6 +16,11 @@ export class PokemonListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  /**
+   * handles emitted remove event from pokemon-list-item
+   * occurs when the user clicks on the "Remove from my collection" button
+   * @param pokemonId stores the id of the removed Pokemon
+   */
   handleRemove(pokemonId: number) {
     console.log(`You just removed Pokemon with id ${pokemonId} from your collection...`);
     //--- get Pokemon with this ID

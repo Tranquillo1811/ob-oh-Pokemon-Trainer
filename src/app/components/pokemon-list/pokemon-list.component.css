@@ -3,3 +3,8 @@ section {
     flex-flow: wrap;
     background-color: cyan;
 }
+
+div {
+    display: flex;
+    flex-flow: wrap;
+}

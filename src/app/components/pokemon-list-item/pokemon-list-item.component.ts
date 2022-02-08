@@ -25,20 +25,27 @@ export class PokemonListItemComponent implements OnInit {
   ) { }
 
   ngOnInit(): void { 
+    //--- check whether the respective Pokemon belongs to current trainer's collection
     this._isCollected = 
       this.pokemonTrainerService.pokemonIdsCollected.indexOf(Number(this.pokemonDetails?.id)) > -1
   }
 
+  /**
+   * handles click event on button "Add to my collection"
+   */
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
     console.log(`TrainerId: ${this.pokemonTrainerService.trainer?.id}`);
     this.pokemonTrainerService.addPokemon2Collection(
       Number(this.pokemonTrainerService.trainer?.id),   //--- trainerId 
-      Number(this.pokemonDetails?.id)
+      Number(this.pokemonDetails?.id)   //--- Pokemon ID
     );
 
   }
 
+  /**
+   * handles click event on button "Remove from my collection"
+   */
   handleRemoveFromCollectionClick(): void {
     console.log("entered handleRemoveFromCollectionClick()...");
     console.log(`TrainerId: ${this.pokemonTrainerService.trainer?.id}`);

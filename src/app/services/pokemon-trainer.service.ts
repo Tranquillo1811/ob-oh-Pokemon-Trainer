@@ -15,16 +15,21 @@ const { pokemonApiBaseUrl } = environment;
 })
 export class PokemonTrainerService {
 
+  /**
+   * reads Trainer object from localStorage 
+   */
   get trainer(): Trainer | undefined {
     let result = undefined;
     const storage = localStorage.getItem(pokemonTrainer);
     if(storage !== null) {
       result = JSON.parse(storage);
     }
-    //console.log("result:", result);
     return result;
   }
 
+  /**
+   * gets IDs of Pokemons that the current trainer has collected from Catalogue Page
+   */
   get pokemonIdsCollected(): number[] {
     console.log(`pokemonIdsCollected: ${this.trainer}`);
     return this.trainer === undefined ? [] : this.trainer.pokemon;
@@ -36,12 +41,9 @@ export class PokemonTrainerService {
    */
   get pokemonsCollected(): Pokemon[] {
     let result: Pokemon[] = [];
-    //console.log(`[pokemonsCollected getter] this._pokemonIdsCollected: ${this.pokemonIdsCollected}`);
     const storage = sessionStorage.getItem(pokemonList);
-    //console.log(`sessionStorage: ${storage}`);
     if(storage != null) {
       const pokemonArray = JSON.parse(storage);
-      //console.log(`[pokemonsCollected getter] pokemonArray: ${pokemonArray[0].details.height}`);
       for (const pokemonId of this.pokemonIdsCollected) {
         //--- check whether pokemon with current id is available in sessionStorage
         const foundPokemon = pokemonArray.filter((pokemon: Pokemon) => pokemon.details?.id == pokemonId);
@@ -82,7 +84,15 @@ export class PokemonTrainerService {
             ))
             .subscribe({
               next: (pokemonDetails: PokemonDetails) => {
-                result.push({name: pokemonDetails.name, url: url, details: pokemonDetails});
+                const pokemon: Pokemon = {name: pokemonDetails.name, url: url, details: pokemonDetails};
+                result.push(pokemon);
+                //--- also add this Pokemon to the sessionStorage
+                const storage = sessionStorage.getItem(pokemonList);
+                let cache: Pokemon[] = [];
+                if(storage != null) {
+                  cache = JSON.parse(storage);
+                }
+                cache.push(pokemon);
               }
             })
       }
@@ -91,6 +101,7 @@ export class PokemonTrainerService {
     return result;
   }
 
+  //--- inject required services
   constructor(private http: HttpClient, private loginService: LoginService) {  }
 
   /**
@@ -182,6 +193,11 @@ export class PokemonTrainerService {
     this.http.patch(url, body, { headers })
       .subscribe((response) => console.log("response:", response))
   }
+
+  /**
+   * helper function to create httpHeader for API HTTP request
+   * @returns httpHeader to use in HTTP request
+   */
   private createHttpHeaders(): HttpHeaders {
     return new HttpHeaders({
         'Content-Type': 'application/json',

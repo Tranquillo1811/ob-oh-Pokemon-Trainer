@@ -36,3 +36,8 @@ export interface Trainer {
     pokemon: number[];
 }
 
+export interface TrainerResponse<T> {
+    data: T;
+    success: boolean;
+    error?: string;
+}
