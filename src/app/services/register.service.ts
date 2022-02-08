@@ -1,20 +1,16 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { finalize, map} from 'rxjs/operators';
-import { catchError, of, tap, throwError  } from 'rxjs';
-
+import { map } from 'rxjs/operators';
+import { catchError, tap, throwError  } from 'rxjs';
 import { environment } from '../../environments/environment'
-import { TrainerPagePage } from '../pages/trainer-page/trainer-page.page';
 import { Trainer, TrainerResponse } from '../models/pokemon.model';
 
-const {pokemonApiBaseUrl} = environment;
-const { pokemonSessionKeyUser } = environment;
+const {pokemonTrainerApiBaseUrl: pokemonApiBaseUrl} = environment;
 
 @Injectable({
     providedIn: 'root'
 })
-
 export class RegisterService {
 
     constructor(private http: HttpClient) {}

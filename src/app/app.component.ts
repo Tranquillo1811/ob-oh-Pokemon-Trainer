@@ -3,7 +3,7 @@ import { Router } from "@angular/router";
 
 import { environment } from "../environments/environment";
 
-const {pokemonSessionKeyUser} = environment;
+const { pokemonTrainer, pokemonList } = environment;
 
 @Component({
   selector: 'app-root',
@@ -30,8 +30,8 @@ export class AppComponent implements OnInit {
   }
 
   public onLogoutClick(): any {
-    localStorage.removeItem(pokemonSessionKeyUser)
-
+    localStorage.removeItem(pokemonTrainer)
+    sessionStorage.removeItem(pokemonList);
     return this.router.navigate(["login"]);
   }
 }

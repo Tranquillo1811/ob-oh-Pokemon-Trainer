@@ -1,6 +1,12 @@
 <section>
-    <app-pokemon-list-item 
-        *ngFor="let pokemon of pokemons" 
-        [pokemonDetails]="pokemon.details">
-    </app-pokemon-list-item>
+    <div *ngIf="pokemons.length > 0">
+        <app-pokemon-list-item 
+            *ngFor="let pokemon of pokemons" 
+            [pokemonDetails]="pokemon.details"
+            (remove)="handleRemove($event)">
+        </app-pokemon-list-item>
+    </div>
+    <h4 *ngIf="pokemons.length == 0">
+        There are no Pokemons in your collection...
+    </h4>
 </section>
