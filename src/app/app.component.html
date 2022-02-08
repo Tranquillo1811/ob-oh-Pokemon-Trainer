@@ -2,6 +2,9 @@
     <h1>I am the (root) app component</h1>
     <nav>
         I am the navigation bar:
+        <button type="button" (click)="onTrainerPageClick()">Trainer Page</button>
+        <button type="button" (click)="onCataloguePageClick()">Cataloque Page</button>
+        <button type="button" (click)="onLogoutClick()">Logout</button>
     </nav>
     <main>
         <router-outlet></router-outlet>
