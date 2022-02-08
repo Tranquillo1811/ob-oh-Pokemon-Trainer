@@ -11,6 +11,9 @@ import { CataloguePagePage } from './pages/catalogue-page/catalogue-page.page';
 import { PokemonListComponent } from './components/pokemon-list/pokemon-list.component';
 import { PokemonListItemComponent } from './components/pokemon-list-item/pokemon-list-item.component';
 import { LoginGuardService } from './services/login-guard.service';
+import { LoginService } from './services/login.service';
+import { RegisterService } from './services/register.service';
+import { PokemonTrainerService } from './services/pokemon-trainer.service';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,7 @@ import { LoginGuardService } from './services/login-guard.service';
     HttpClientModule,
     FormsModule
   ],
-  providers: [LoginGuardService],
+  providers: [LoginGuardService, LoginService, RegisterService, PokemonTrainerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

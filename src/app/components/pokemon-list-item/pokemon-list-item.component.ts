@@ -1,6 +1,5 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { Pokemon, PokemonDetails } from 'src/app/models/pokemon.model';
-import { LoginService } from 'src/app/services/login.service';
+import { Component, EventEmitter, Input, Output, OnInit } from '@angular/core';
+import { PokemonDetails } from 'src/app/models/pokemon.model';
 import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
 
 @Component({
@@ -12,29 +11,49 @@ export class PokemonListItemComponent implements OnInit {
 
   @Input()
   pokemonDetails: PokemonDetails | null = null;
+  @Output()
+  remove: EventEmitter<number> = new EventEmitter();
+
+  private _isCollected: boolean = false;
 
   get isCollected(): boolean {
-    let result: boolean = false;
-    if(Array.isArray(this.pokemonTrainerService.pokemonIdsCollected)) {
-      result = this.pokemonTrainerService.pokemonIdsCollected.indexOf(Number(this.pokemonDetails?.id)) > -1
-    }
-    return result;
+    return this._isCollected;
   }
 
   constructor(
-    private pokemonTrainerService: PokemonTrainerService,
-    private loginService: LoginService
+    private pokemonTrainerService: PokemonTrainerService
   ) { }
 
-  ngOnInit(): void {  }
+  ngOnInit(): void { 
+    //--- check whether the respective Pokemon belongs to current trainer's collection
+    this._isCollected = 
+      this.pokemonTrainerService.pokemonIdsCollected.indexOf(Number(this.pokemonDetails?.id)) > -1
+  }
 
+  /**
+   * handles click event on button "Add to my collection"
+   */
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
+    console.log(`TrainerId: ${this.pokemonTrainerService.trainer?.id}`);
     this.pokemonTrainerService.addPokemon2Collection(
-      Number(this.loginService.Trainer?.id),   //--- trainerId 
-      Number(this.pokemonDetails?.id)
+      Number(this.pokemonTrainerService.trainer?.id),   //--- trainerId 
+      Number(this.pokemonDetails?.id)   //--- Pokemon ID
     );
 
+  }
+
+  /**
+   * handles click event on button "Remove from my collection"
+   */
+  handleRemoveFromCollectionClick(): void {
+    console.log("entered handleRemoveFromCollectionClick()...");
+    console.log(`TrainerId: ${this.pokemonTrainerService.trainer?.id}`);
+    this.pokemonTrainerService.removePokemonFromCollection(
+      Number(this.pokemonTrainerService.trainer?.id),   //--- trainerId 
+      Number(this.pokemonDetails?.id)
+    );
+    this.remove.emit(this.pokemonDetails?.id);
   }
 
 }

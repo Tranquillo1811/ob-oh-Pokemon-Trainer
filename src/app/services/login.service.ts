@@ -6,16 +6,13 @@ import { catchError, Observable, of, tap, throwError  } from 'rxjs';
 
 import { environment } from '../../environments/environment'
 import { Trainer } from '../models/pokemon.model';
-
 import { RegisterService } from "./register.service";
 
-const { pokemonApiBaseUrl } = environment;
-const { pokemonSessionKeyUser } = environment;
+const { pokemonTrainerApiBaseUrl, pokemonTrainer } = environment;
 
 @Injectable({
     providedIn: 'root'
-  })
-
+})
 export class LoginService {
     private _trainer: Trainer | undefined;
     private _error: string = '';
@@ -35,50 +32,49 @@ export class LoginService {
 
     // Login User
     public login(username: string): void {
-        this._error = '';
+    this._error = '';
         
-        this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
-          .pipe(
-            map((response: Trainer[]) => {
-              if (response.length === 0) {
-                throw new Error(`User ${username} was not found.`);
+    this.http.get<Trainer[]>(`${pokemonTrainerApiBaseUrl}?username=${username}`)
+      .pipe(
+        map((response: Trainer[]) => {
+          if (response.length === 0) {
+            throw new Error(`User ${username} was not found.`);
+          }
+          return response.pop();
+        }),
+        finalize(() => {
+        })
+      )
+      .subscribe({
+        next: (response) => {
+            this._trainer = response;
+            localStorage.setItem(pokemonTrainer, JSON.stringify(this._trainer));
+            console.log(this._trainer);
+
+            this.router.navigateByUrl("/trainer");
+        },
+        error: (error) => {
+            // User does not exists. Register user
+            // this._error = error.message;
+            this.registerService.newRegister(username).subscribe({
+              next: (response: boolean) => {
+                // Assume it was successful
+                console.log('REGISTER:', response);
+
+                // Try login again after user registered.
+                // New http request
+                this.login(username);
+              },
+              error: (error) => {
+                this.registerError = error;
+                this._error = error.message;
               }
-              return response.pop();
-            }),
-            finalize(() => {
-            })
-          )
-          .subscribe({
-            next: (response) => {
-                this._trainer = response;
-                localStorage.setItem(pokemonSessionKeyUser, JSON.stringify(this._trainer));
-                console.log(this._trainer);
+            });
+        }
+      }), (error: HttpErrorResponse) => { };
+    }    
 
-                this.router.navigateByUrl("/catalogue");
-            },
-            error: (error) => {
-                // User does not exists. Register user
-                // this._error = error.message;
-                this.registerService.newRegister(username).subscribe({
-                  next: (response: boolean) => {
-                    // Assume it was successful
-                    console.log('REGISTER:', response);
-
-                    // Try login again after user registered.
-                    // New http request
-                    this.login(username);
-                  },
-                  error: (error) => {
-                    this.registerError = error;
-                    this._error = error.message;
-                  }
-                });
-            }
-          }), (error: HttpErrorResponse) => {
-          };
-      }    
-
-    get Trainer(): Trainer | undefined {
+    get trainer(): Trainer | undefined {
         return this._trainer;
     } 
     
