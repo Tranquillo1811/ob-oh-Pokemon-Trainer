@@ -1,6 +1,6 @@
 import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { ComponentFactoryResolver, Injectable } from '@angular/core';
-import { map, finalize } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { map } from 'rxjs';
 import { Pokemon, PokemonDetails, PokemonResponse } from '../models/pokemon.model';
 
 //const URL = "https://pokeapi.co/api/v2/pokemon/?limit=60&offset=120";
@@ -13,8 +13,7 @@ export class PokemonTrainerService {
 
   private _isLoading: boolean = false;
   private _pokemons: Pokemon[] = [];
-  //private {pokemonSessionKeyUser} = environment;
-  private _pokemonSessionKeyUser = 'pokemon-session';
+  private _pokemonIdsCollected: number[] = [];
 
   get isLoading(): boolean {
     return this._isLoading;
@@ -24,13 +23,7 @@ export class PokemonTrainerService {
   }
 
   get pokemonIdsCollected(): Number[] {
-    let result: Number[] = [];
-    const data = sessionStorage.getItem(this._pokemonSessionKeyUser);
-    if(data !== null && data !== undefined) {
-      result = JSON.parse(data);
-    }
-    console.log(`pokemonIdsCollected: ${result}`);
-    return result;
+    return this._pokemonIdsCollected;
   }
   constructor(private http: HttpClient) { }
 
@@ -64,25 +57,23 @@ export class PokemonTrainerService {
       })
   }
   
+  /**
+   * adds PokemonId to PokemonIdArray in JSON DB
+   * @param trainerId id od the trainer
+   * @param pokemonId if of the pokemon that is to be added to JSON DB
+   */
   addPokemon2Collection(trainerId: number, pokemonId: number): void {
-    let pokemonsCollected = this.pokemonIdsCollected;
-    if(Array.isArray(pokemonsCollected)) {
-      pokemonsCollected.push(pokemonId);
-    }
-    else {
-      pokemonsCollected = [pokemonId];
-    }
+    const pokemonsCollected = this._pokemonIdsCollected;
+    this._pokemonIdsCollected.push(pokemonId);
     console.log(`storing this collection to JSON DB: ${pokemonsCollected}`);
+    const headers = this.createHttpHeaders();
     const body = {
       pokemon: pokemonsCollected
     }
-    const headers = this.createHttpHeaders();
     console.log(`sending PATCH request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${pokemonsCollected}`);
     const url = `${trainerAPIUrl}/${trainerId}`;
     this.http.patch(url, body, { headers })
       .subscribe((response) => console.log("response:", response))
-    //--- update collected pokemons in session storage
-    sessionStorage.setItem(this._pokemonSessionKeyUser, JSON.stringify(pokemonsCollected));
   }
 
   private createHttpHeaders(): HttpHeaders {

@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
 
 import { environment } from '../../../environments/environment'
 
-const {pokemonSessionKeyUser} = environment;
+const {pokemonTrainer: pokemonSessionKeyUser} = environment;
 
 @Component({
   selector: 'app-trainer-page',
@@ -12,14 +13,14 @@ const {pokemonSessionKeyUser} = environment;
 })
 export class TrainerPagePage implements OnInit {
 
-  constructor(private readonly router: Router) 
-  { 
-    const data = localStorage.getItem(pokemonSessionKeyUser);
-
-    if (data === null || data === 'undefined') {
-      this.router.navigate(['/login']);
-    }    
+  /**
+   * gets all Pokemons collected by the current user from pokemon-trainer-service
+   */
+  get collectedPokemons() {
+    
   }
+  constructor(private pokemonTrainerService: PokemonTrainerService) 
+  { }
 
   ngOnInit(): void {
   }

@@ -7,7 +7,7 @@ import { environment } from "../../../environments/environment";
 import { RegisterService } from "../../services/register.service";
 import { NgForm } from '@angular/forms';
 
-const {pokemonSessionKeyUser} = environment;
+const { pokemonTrainer } = environment;
 
 @Component({
   selector: 'app-landing-page',
@@ -24,7 +24,7 @@ export class LandingPagePage implements OnInit {
     private readonly router: Router,
     private registerService: RegisterService) 
     {
-      const data = localStorage.getItem(pokemonSessionKeyUser);
+      const data = localStorage.getItem(pokemonTrainer);
 
       if (data && data !== 'undefined') {
         console.log(JSON.parse(data));
@@ -57,7 +57,7 @@ export class LandingPagePage implements OnInit {
   public onSaveClick(form: NgForm): any {
     this.username = form.value.username;
     if (this.trainer === null || this.trainer === undefined){
-      localStorage.setItem(pokemonSessionKeyUser, this.asJSON(this.trainer));
+      localStorage.setItem(pokemonTrainer, this.asJSON(this.trainer));
 
       console.log(`registering new user: ${this.username}`);
       this.registerService.register(this.username)

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Pokemon, PokemonDetails } from 'src/app/models/pokemon.model';
+import { LoginService } from 'src/app/services/login.service';
 import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
 import { environment } from '../../../environments/environment'
 
@@ -23,7 +24,7 @@ export class PokemonListItemComponent implements OnInit {
 
   constructor(
     private pokemonTrainerService: PokemonTrainerService,
-    //private loginService: LoginService
+    private loginService: LoginService
   ) { }
 
   ngOnInit(): void {  }
@@ -31,10 +32,9 @@ export class PokemonListItemComponent implements OnInit {
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
     this.pokemonTrainerService.addPokemon2Collection(
-      2,   //--- trainerId 
+      
       Number(this.pokemonDetails?.id)
     );
-    //[1, 2, 3].push(Number(this.pokemonDetails?.id));
 
   }
 
