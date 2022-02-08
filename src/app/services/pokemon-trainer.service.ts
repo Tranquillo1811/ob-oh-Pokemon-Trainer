@@ -15,27 +15,14 @@ const { pokemonApiBaseUrl } = environment;
 })
 export class PokemonTrainerService {
 
-  private _isLoading: boolean = false;  
-
-  get isLoading(): boolean {
-    return this._isLoading;
-  }
-
-  get trainerId(): number {
-    let result = 0;
-    if(this.loginService !== undefined) {
-      if(this.loginService.trainer !== undefined) {
-        if(this.loginService.trainer?.id != undefined) {
-          result = this.loginService.trainer.id;
-        }
-      }
-    }
-    return result;
-  }
-
   get trainer(): Trainer | undefined {
-    console.log("Trainer:",this.loginService?.trainer);
-    return this.loginService?.trainer;
+    let result = undefined;
+    const storage = localStorage.getItem(pokemonTrainer);
+    if(storage !== null) {
+      result = JSON.parse(storage);
+    }
+    //console.log("result:", result);
+    return result;
   }
 
   get pokemonIdsCollected(): number[] {
@@ -115,7 +102,6 @@ export class PokemonTrainerService {
    */
   loadPokemons(url: string, limit: number, offset: number): void {
     url = `${url}?limit=${limit}&offset=${offset}`;
-    this._isLoading = true;
     this.http.get<PokemonResponse>(url)
       .pipe(
         map((response: PokemonResponse) => response.results )
@@ -182,10 +168,10 @@ export class PokemonTrainerService {
    * @param pokemonId id of the pokemon that is to be removed from JSON DB
    */
    removePokemonFromCollection(trainerId: number, pokemonId: number): void {
-    const trainer = this.loginService.trainer;
-    console.log(`[addPokemon2Collection] trainer.pokemon: ${trainer?.pokemon}`);
+    const trainer = this.trainer;
+    console.log(`[removePokemonFromCollection] trainer.pokemon: ${trainer?.pokemon}`);
     trainer?.pokemon.splice(trainer?.pokemon.indexOf(pokemonId), 1);
-    console.log(`[addPokemon2Collection] trainer.pokemon after splice: ${trainer?.pokemon}`);
+    console.log(`[removePokemonFromCollection] trainer.pokemon after splice: ${trainer?.pokemon}`);
     localStorage.setItem(pokemonTrainer, JSON.stringify(trainer));
     const headers = this.createHttpHeaders();
     const body = {

@@ -16,4 +16,11 @@ export class PokemonListComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  handleRemove(pokemonId: number) {
+    console.log(`You just removed Pokemon with id ${pokemonId} from your collection...`);
+    //--- get Pokemon with this ID
+    const removedPokemon = this.pokemons.filter(pokemon => pokemon.details?.id == pokemonId)[0];
+    this.pokemons.splice(this.pokemons.indexOf(removedPokemon), 1);
+  }
+
 }

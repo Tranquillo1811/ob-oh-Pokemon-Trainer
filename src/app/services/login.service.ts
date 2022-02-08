@@ -20,35 +20,35 @@ export class LoginService {
 
     // Login User
     public login(username: string): void {
-        this._test = "Singleton";
-        this._error = '';
-        
-        this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
-          .pipe(
-            map((response: Trainer[]) => {
-              if (response.length === 0) {
-                throw Error(`User ${username} was not found.`);
-              }
-              const trainer = response.pop();
-              console.log(`Trainer: ${trainer}`);
-              return trainer;
-            }),
-            finalize(() => {
-              console.log('Finish loading');
-            })
-          )
-          .subscribe({
-            next: (response) => {
-                this._trainer = response;
-                localStorage.setItem(pokemonTrainer, JSON.stringify(this.trainer));
-                console.log(`current trainer: ${this.trainer}`);
-            },
-            error: (error) => {
-                this._error = error.message;
+      this._test = "Singleton";
+      this._error = '';
+      
+      this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
+        .pipe(
+          map((response: Trainer[]) => {
+            if (response.length === 0) {
+              throw Error(`User ${username} was not found.`);
             }
-          }), (error: HttpErrorResponse) => {
-            
-          };
+            const trainer = response.pop();
+            console.log(`Trainer: ${trainer}`);
+            return trainer;
+          }),
+          finalize(() => {
+            console.log('Finish loading');
+          })
+        )
+        .subscribe({
+          next: (response) => {
+              this._trainer = response;
+              localStorage.setItem(pokemonTrainer, JSON.stringify(this.trainer));
+              console.log(`current trainer: ${this.trainer}`);
+          },
+          error: (error) => {
+              this._error = error.message;
+          }
+        }), (error: HttpErrorResponse) => {
+          
+        };
       }    
 
     get test(): string {
