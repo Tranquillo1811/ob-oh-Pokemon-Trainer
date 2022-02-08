@@ -5,7 +5,7 @@ import {finalize, map} from 'rxjs/operators';
 import { environment } from '../../environments/environment'
 import { Trainer } from '../models/pokemon.model';
 
-const { pokemonApiBaseUrl } = environment;
+const { pokemonTrainerApiBaseUrl: pokemonApiBaseUrl } = environment;
 const { pokemonTrainer } = environment;
 
 @Injectable({
@@ -28,7 +28,9 @@ export class LoginService {
               if (response.length === 0) {
                 throw Error(`User ${username} was not found.`);
               }
-              return response.pop();
+              const trainer = response.pop();
+              console.log(`Trainer: ${trainer}`);
+              return trainer;
             }),
             finalize(() => {
               console.log('Finish loading');
@@ -38,7 +40,7 @@ export class LoginService {
             next: (response) => {
                 this._trainer = response;
                 localStorage.setItem(pokemonTrainer, JSON.stringify(this._trainer));
-                console.log(this._trainer);
+                console.log(`current trainer: ${this._trainer}`);
             },
             error: (error) => {
                 this._error = error.message;
@@ -49,7 +51,13 @@ export class LoginService {
       }    
 
     get Trainer(): Trainer | undefined {
-        return this._trainer;
+        let result = undefined;
+        const storage = localStorage.getItem(pokemonTrainer);
+        console.log(`localStorage.getItem(pokemonTrainer): ${storage}`);
+        if(storage !== null) {
+          result = JSON.parse(storage);
+        }
+        return result;
     }  
 
     public getError(): string {

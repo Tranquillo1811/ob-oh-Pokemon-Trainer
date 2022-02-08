@@ -30,6 +30,7 @@ export class PokemonListItemComponent implements OnInit {
 
   handleAdd2CollectionClick(): void {
     console.log("entered handleAdd2CollectionClick()...");
+    console.log(`TrainerId: ${this.loginService.Trainer?.id}`);
     this.pokemonTrainerService.addPokemon2Collection(
       Number(this.loginService.Trainer?.id),   //--- trainerId 
       Number(this.pokemonDetails?.id)

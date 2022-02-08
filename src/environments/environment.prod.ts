@@ -1,6 +1,7 @@
 export const environment = {
   production: true,
-  pokemonApiBaseUrl: 'https://obe-assignment-api.herokuapp.com/trainers',
+  pokemonTrainerApiBaseUrl: 'https://obe-assignment-api.herokuapp.com/trainers',
+  pokemonApiBaseUrl: "https://pokeapi.co/api/v2/",
   pokemonTrainer: 'pokemon-trainer',
   pokemonList: 'pokemon-list'
 };

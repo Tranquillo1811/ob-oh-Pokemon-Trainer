@@ -32,7 +32,7 @@ export class LandingPagePage implements OnInit {
         const _trainer: Trainer = JSON.parse(data);
         // this.successful.emit(_trainer);
 
-        this.router.navigate(['catalogue']);
+        //this.router.navigate(['catalogue']);
       }
     }
 

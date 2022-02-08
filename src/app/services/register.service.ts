@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 
 import { environment } from '../../environments/environment'
 
-const {pokemonApiBaseUrl} = environment;
+const {pokemonTrainerApiBaseUrl: pokemonApiBaseUrl} = environment;
 
 @Injectable({
     providedIn: 'root'

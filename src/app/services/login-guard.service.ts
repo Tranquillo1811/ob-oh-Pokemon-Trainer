@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CanActivate, Router } from "@angular/router";
 import { environment } from '../../environments/environment'
 
-const { pokemonTrainer: pokemonSessionKeyUser } = environment;
+const { pokemonTrainer } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class LoginGuardService implements CanActivate {
    */
   canActivate() {
       //console.log("LoginGuardService is active...");
-      const trainer = localStorage.getItem(pokemonSessionKeyUser);
+      const trainer = localStorage.getItem(pokemonTrainer);
       const result = trainer !== undefined && trainer !== null && trainer !== ""
       if(!result) {
         this.router.navigateByUrl("/login");

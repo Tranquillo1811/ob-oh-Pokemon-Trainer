@@ -1,12 +1,14 @@
 import { HttpClient,HttpHeaders } from '@angular/common/http';
+import { identifierName } from '@angular/compiler';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { environment } from "../../environments/environment";
-import { Pokemon, PokemonDetails, PokemonResponse } from '../models/pokemon.model';
+import { Pokemon, PokemonDetails, PokemonResponse, Trainer } from '../models/pokemon.model';
 
 const trainerAPIUrl = "https://obe-assignment-api.herokuapp.com/trainers";
 const { pokemonList } = environment;
 const { pokemonTrainer } = environment;
+const { pokemonApiBaseUrl } = environment;
 
 @Injectable({
   providedIn: 'root'
@@ -14,28 +16,53 @@ const { pokemonTrainer } = environment;
 export class PokemonTrainerService {
 
   private _isLoading: boolean = false;
-  private _pokemonIdsCollected: number[] = [];
 
   get isLoading(): boolean {
     return this._isLoading;
   }
   get pokemonIdsCollected(): Number[] {
-    return this._pokemonIdsCollected;
+    let result: number[] = [];
+    const storage = localStorage.getItem(pokemonTrainer);
+    if(storage) {
+      const trainer: Trainer = JSON.parse(storage);
+      result = trainer.pokemon;
+    }
+    return result;
   }
 
+  /**
+   * gets data of collected Pokemons of current trainer from sessionStorage if available there
+   * or loads from API if not available in sessionStorage
+   */
   get pokemonsCollected(): Pokemon[] {
     let result: Pokemon[] = [];
-    for (const pokemonId of this._pokemonIdsCollected) {
-      //--- check whether pokemon with current id is available in sessionStorage
-      const storage = sessionStorage.getItem(pokemonList);
-      if(storage != null) {
-        const pokemonArray = JSON.parse(storage);
+    //console.log(`[pokemonsCollected getter] this._pokemonIdsCollected: ${this.pokemonIdsCollected}`);
+    const storage = sessionStorage.getItem(pokemonList);
+    //console.log(`sessionStorage: ${storage}`);
+    if(storage != null) {
+      const pokemonArray = JSON.parse(storage);
+      //console.log(`[pokemonsCollected getter] pokemonArray: ${pokemonArray[0].details.height}`);
+      for (const pokemonId of this.pokemonIdsCollected) {
+        //--- check whether pokemon with current id is available in sessionStorage
         const foundPokemon = pokemonArray.filter((pokemon: Pokemon) => pokemon.details?.id == pokemonId);
+        console.log(`[pokemonsCollected getter] foundPokemon for id ${pokemonId}: ${foundPokemon[0].details}`);
         if(foundPokemon) {
-          result.push(foundPokemon);
+          result.push(foundPokemon[0]);
+        }
+        else {
+          //--- Pokemon is not in sessionStorage
+          const url = `${pokemonApiBaseUrl}pokemon/${pokemonId}`;
+          this.http.get<Pokemon>(url)
+            .subscribe({
+              next: (pokemon: Pokemon) => {
+                result.push(pokemon);
+              }
+            })
         }
       }
     }
+
+    console.log(`[pokemonsCollected getter] result: ${result.length}`);
     return result;
   }
 
@@ -58,11 +85,18 @@ export class PokemonTrainerService {
       .subscribe({
         next: (pokemons: Pokemon[]) => {
           for (const pokemon of pokemons) {
-            this.http.get<PokemonDetails>(pokemon.url)
+            this.http.get(pokemon.url)
+              .pipe(
+                map((response: any) => { 
+                  const { id, name, height, weight, sprites } = response;
+                  return { id, name, height, weight, sprites }; 
+                })
+              )
               .subscribe(
                 {
                   next: (details: PokemonDetails) => {
                     pokemon.details = details;
+                    //console.log(`[loadPokemons] pokemons: ${JSON.stringify(pokemons)}`);
                     sessionStorage.setItem(pokemonList, JSON.stringify(pokemons));
                   },
                   error: (error) => {
@@ -84,15 +118,21 @@ export class PokemonTrainerService {
    * @param pokemonId if of the pokemon that is to be added to JSON DB
    */
   addPokemon2Collection(trainerId: number, pokemonId: number): void {
-    const pokemonsCollected = this._pokemonIdsCollected;
-    this._pokemonIdsCollected.push(pokemonId);
-    localStorage.setItem(pokemonTrainer, JSON.stringify(this._pokemonIdsCollected));
-    console.log(`storing this collection to JSON DB: ${pokemonsCollected}`);
+    //--- update collected pokemons in localStorage
+    const storage = localStorage.getItem(pokemonTrainer);
+    console.log(`localStorage: ${storage}`);
+    let trainer: Trainer | null = null;
+    if(storage !== null) {
+      trainer = JSON.parse(storage);
+    }
+    console.log(`[addPokemon2Collection] trainer.pokemon: ${trainer?.pokemon}`);
+    trainer?.pokemon.push(pokemonId);
+    localStorage.setItem(pokemonTrainer, JSON.stringify(trainer));
     const headers = this.createHttpHeaders();
     const body = {
-      pokemon: pokemonsCollected
+      pokemon: this.pokemonIdsCollected
     }
-    console.log(`sending PATCH request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${pokemonsCollected}`);
+    console.log(`sending PATCH request: trainerId=${trainerId}, pokemonId=${pokemonId}, pokemonsCollected=${this.pokemonIdsCollected}`);
     const url = `${trainerAPIUrl}/${trainerId}`;
     this.http.patch(url, body, { headers })
       .subscribe((response) => console.log("response:", response))
