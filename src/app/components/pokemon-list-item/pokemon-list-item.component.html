@@ -17,5 +17,11 @@
             (click)="handleAdd2CollectionClick()">
             Add to my collection
         </button>
+        <button 
+            type="button" 
+            *ngIf="isCollected"
+            (click)="handleRemoveFromCollectionClick()">
+            Add to my collection
+        </button>
     </p>
 </div>

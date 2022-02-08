@@ -10,16 +10,17 @@ const { pokemonTrainer } = environment;
 
 @Injectable({
     providedIn: 'root'
-  })
-
+})
 export class LoginService {
     private _trainer: Trainer | undefined;
     private _error: string = '';
+    private _test: string = "";
 
     constructor(private readonly http: HttpClient) { }
 
     // Login User
     public login(username: string): void {
+        this._test = "Singleton";
         this._error = '';
         
         this.http.get<Trainer[]>(`${pokemonApiBaseUrl}?username=${username}`)
@@ -39,8 +40,8 @@ export class LoginService {
           .subscribe({
             next: (response) => {
                 this._trainer = response;
-                localStorage.setItem(pokemonTrainer, JSON.stringify(this._trainer));
-                console.log(`current trainer: ${this._trainer}`);
+                localStorage.setItem(pokemonTrainer, JSON.stringify(this.trainer));
+                console.log(`current trainer: ${this.trainer}`);
             },
             error: (error) => {
                 this._error = error.message;
@@ -50,14 +51,12 @@ export class LoginService {
           };
       }    
 
-    get Trainer(): Trainer | undefined {
-        let result = undefined;
-        const storage = localStorage.getItem(pokemonTrainer);
-        console.log(`localStorage.getItem(pokemonTrainer): ${storage}`);
-        if(storage !== null) {
-          result = JSON.parse(storage);
-        }
-        return result;
+    get test(): string {
+      return this._test;
+    }
+    get trainer(): Trainer | undefined {
+      //console.log(`current trainer: ${this._trainer}`);
+      return this._trainer;
     }  
 
     public getError(): string {

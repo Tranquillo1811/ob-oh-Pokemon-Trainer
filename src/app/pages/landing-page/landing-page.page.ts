@@ -32,7 +32,7 @@ export class LandingPagePage implements OnInit {
         const _trainer: Trainer = JSON.parse(data);
         // this.successful.emit(_trainer);
 
-        //this.router.navigate(['catalogue']);
+        //this.router.navigate(['login']);
       }
     }
 
@@ -42,7 +42,7 @@ export class LandingPagePage implements OnInit {
 
   // GETTERS
   get trainer(): Trainer | undefined {
-    return this.loginService.Trainer;
+    return this.loginService.trainer;
   }
   
   get error(): string {
@@ -53,6 +53,7 @@ export class LandingPagePage implements OnInit {
   public onLoginClick(form: NgForm): any {
     this.username = form.value.username;
     this.loginService.login(this.username);
+    this.router.navigateByUrl("/trainer");
   } 
   
   public onSaveClick(form: NgForm): any {

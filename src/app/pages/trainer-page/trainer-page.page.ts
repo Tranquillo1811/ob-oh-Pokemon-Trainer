@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Pokemon } from 'src/app/models/pokemon.model';
+import { LoginService } from 'src/app/services/login.service';
 import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service';
 
 @Component({
@@ -9,19 +10,21 @@ import { PokemonTrainerService } from 'src/app/services/pokemon-trainer.service'
 })
 export class TrainerPagePage implements OnInit {
 
+  private _collectedPokemons: Pokemon[] = [];
   /**
    * gets all Pokemons collected by the current user from localStorage
    */
   get collectedPokemons() {
-    const result: Pokemon[] = this.pokemonTrainerService.pokemonsCollected;
-    console.log(`[GETTER collectedPokemons] result: ${result[0].url}`)
-    return result;
+    return this._collectedPokemons;
   }
 
-  constructor(private pokemonTrainerService: PokemonTrainerService) 
+  constructor(private loginService: LoginService, private pokemonTrainerService: PokemonTrainerService) 
   { }
 
   ngOnInit(): void {
+    this._collectedPokemons = this.pokemonTrainerService.pokemonsCollected;    
+    console.log(`ngOnInit: ${this.pokemonTrainerService.pokemonsCollected}`)
+    console.log("Test:", this.loginService.test);
   }
 
 }
