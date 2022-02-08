@@ -6,7 +6,7 @@
             (remove)="handleRemove($event)">
         </app-pokemon-list-item>
     </div>
-    <div *ngIf="pokemons.length == 0">
-        You have no Pokemons in your collection...
-    </div>
+    <h4 *ngIf="pokemons.length == 0">
+        There are no Pokemons in your collection...
+    </h4>
 </section>
