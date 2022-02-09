@@ -2,7 +2,7 @@
   "name": "ng-ob-oh-pokemon-trainer",
   "version": "0.0.0",
   "scripts": {
-    "preinstall": "npm install -g angular-cli",
+    "preinstall": "npm install angular-cli",
     "ng": "ng",
     "start": "ng server.js",
     "build": "ng build",
